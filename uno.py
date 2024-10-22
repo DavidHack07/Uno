@@ -10,14 +10,15 @@ def start_game():
     deck = [(rank, colour) for rank in ranks for colour in colours]
     random.shuffle(deck)
 
-    p1 = [deck.pop(0) for _ in range(2)]
-    p2 = [deck.pop(0) for _ in range(2)]
+    p1 = [deck.pop(0) for _ in range(7)]
+    p2 = [deck.pop(0) for _ in range(7)]
 
     central_card = deck.pop(0)
     main_loop(p1, p2, deck, central_card, 0)
 
 
 def main_loop(p1, p2, deck, central_card, whose_turn):
+    count = 0
     while len(p1) > 0 and len(p2) > 0:
 
         print(f"\nPlayer {whose_turn + 1}'s turn, here is your hand {p1}")
@@ -30,7 +31,7 @@ def main_loop(p1, p2, deck, central_card, whose_turn):
                 ans = int(input("Bad Choice. You can (0) draw or (1) play: "))
                 if ans == 1 or ans == 0:
                     break
-
+        skip_turn = True
         if ans == 1:
             valid_play_found = "No :("
 
@@ -39,6 +40,7 @@ def main_loop(p1, p2, deck, central_card, whose_turn):
                 if 0 <= player_choice < len(p1):
                     valid = valid_play(central_card, p1[player_choice])
                     if valid:
+                        player_card = p1[player_choice]
                         central_card = p1.pop(player_choice)
                         valid_play_found = "Yup"
                     else:
@@ -47,22 +49,19 @@ def main_loop(p1, p2, deck, central_card, whose_turn):
                     print("Invalid card selection. Please try again.")
 
 # +2 card code
-            plus2_flag = True
 
-            if central_card[0] == "+2" and plus2_flag == True:
+            if ((player_card)[0]) == "+2":
                 print("The opponent must draw 2 cards!")
                 p2.append(deck.pop(0))
                 p2.append(deck.pop(0))
-                plus2_flag = False
 
 # Skip turn card code ->
-
-            skip_turn = True
-            
+        
             if central_card[0] == "Skip Turn" and skip_turn == True:
                 print("The opponent turn has been skipped!")
                 whose_turn = (whose_turn + 1)
                 skip_turn = False
+                count += 1
 
         elif ans == 0:
             draw_card = deck.pop(0)
@@ -71,14 +70,15 @@ def main_loop(p1, p2, deck, central_card, whose_turn):
         if skip_turn:
             p1, p2 = p2, p1
 
+        count += 1
+
         whose_turn = (whose_turn + 1) % 2
 
 # Determining winner code
-
-    winner = 1 if len(p1) == 0 else 2
-    print(f"Player {winner} wins!")
-
-
+    if count % 2 == 0:
+        print(f"Player 2 wins")
+    else:
+        print("Player 1 wins!!!1")
 
 def valid_play(card1, card2):
     return card1[0] == card2[0] or card1[1] == card2[1]
