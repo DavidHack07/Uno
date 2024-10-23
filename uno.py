@@ -1,12 +1,13 @@
-# code by David Hack and James Combista
-# implemented +2 and Skip Turn
+# David Hack CODE
+# implemented Skip Turn
 
 import random
 
 
 def start_game():
     colours = ("Red", "Yellow", "Green", "Blue")
-    ranks = list(range(1, 11)) + ["+2"] + ["Skip Turn"]  # Add "+2" and Skip Turn as special ranks
+    ranks = list(range(1, 11)) + ["Skip Turn"]  
+    # Add Skip Turn as special ranks
     deck = [(rank, colour) for rank in ranks for colour in colours]
     random.shuffle(deck)
 
@@ -47,13 +48,6 @@ def main_loop(p1, p2, deck, central_card, whose_turn):
                         print("Invalid play. Please choose a valid card.")
                 else:
                     print("Invalid card selection. Please try again.")
-
-# +2 card code
-
-            if ((player_card)[0]) == "+2":
-                print("The opponent must draw 2 cards!")
-                p2.append(deck.pop(0))
-                p2.append(deck.pop(0))
 
 # Skip turn card code ->
         
